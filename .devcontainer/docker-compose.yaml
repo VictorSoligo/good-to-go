@@ -1,0 +1,29 @@
+services:
+  app:
+    build: .
+    container_name: app
+    init: true
+    volumes:
+      - ../:/app
+    command: sleep infinity
+    ports:
+      - '3000:3000'
+      - '8080:8080'
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8.4.1
+    container_name: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=goodtogo
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - database:/var/lib/mysql
+      
+volumes:
+  database:

@@ -1,0 +1,22 @@
+{
+  "name": "good-to-go",
+  "dockerComposeFile": "docker-compose.yaml",
+  "service": "app",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+          "ms-vscode.vscode-typescript-next",
+          "xdebug.php-debug",
+          "bmewburn.vscode-intelephense-client",
+          "zobo.php-intellisense",
+          "dbaeumer.vscode-eslint",
+          "visualstudioexptteam.vscodeintell",
+          "visualstudioexptteam.intellicode-api-usage-examples"
+      ]
+    }
+  }
+}
