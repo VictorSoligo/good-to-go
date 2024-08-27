@@ -3,6 +3,7 @@
     "name": "good-to-go",
     "slug": "good-to-go",
     "version": "1.0.0",
+    "scheme": "br.com.goodtogo",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

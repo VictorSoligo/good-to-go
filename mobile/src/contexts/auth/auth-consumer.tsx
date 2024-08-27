@@ -13,7 +13,7 @@ type Props = {
 export function AuthConsumer({ children }: Props) {
   return (
     <AuthContext.Consumer>
-      {(auth) => (!auth.loading ? <Loading /> : children)}
+      {(auth) => (auth.loading ? <Loading /> : children)}
     </AuthContext.Consumer>
   );
 }
