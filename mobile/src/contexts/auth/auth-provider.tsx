@@ -1,0 +1,208 @@
+import React from "react";
+import { useEffect, useReducer, useCallback, useMemo, useState } from "react";
+//
+import { AuthContext } from "./auth-context";
+import { ActionMapType, AuthStateType, AuthUserType } from "./types";
+import { getSession, storageSession } from "../../storage/storageAuthToken";
+import { removeSession, setAxiosSession } from "../../storage/axiosSession";
+import authRepository from "../../repositories/auth-repository";
+import { IAccount } from "../../types/account";
+
+enum Types {
+  INITIAL = "INITIAL",
+  LOGIN = "LOGIN",
+  LOGOUT = "LOGOUT",
+  UPDATE_USER = "UPDATE_USER",
+}
+
+type Payload = {
+  [Types.INITIAL]: {
+    account: AuthUserType;
+  };
+  [Types.LOGIN]: {
+    account: AuthUserType;
+  };
+  [Types.UPDATE_USER]: {
+    account: AuthUserType;
+  };
+  [Types.LOGOUT]: undefined;
+};
+
+type ActionsType = ActionMapType<Payload>[keyof ActionMapType<Payload>];
+
+// ----------------------------------------------------------------------
+
+const initialState: AuthStateType = {
+  account: null,
+  loading: true,
+};
+
+const reducer = (state: AuthStateType, action: ActionsType) => {
+  if (action.type === Types.INITIAL) {
+    return {
+      loading: false,
+      account: action.payload.account,
+    };
+  }
+  if (action.type === Types.LOGIN) {
+    return {
+      ...state,
+      account: action.payload.account,
+    };
+  }
+  if (action.type === Types.UPDATE_USER) {
+    return {
+      ...state,
+      account: action.payload.account,
+    };
+  }
+  if (action.type === Types.LOGOUT) {
+    return {
+      ...state,
+      account: null,
+    };
+  }
+  return state;
+};
+
+// ----------------------------------------------------------------------
+
+type Props = {
+  children: React.ReactNode;
+};
+
+export function AuthProvider({ children }: Props) {
+  const [isLoadingAccount, setIsLoadingAccount] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const initialize = async () => {
+    try {
+      const { token } = await getSession();
+
+      if (token) {
+        const { account, tokens } = await authRepository.myAccount();
+
+        setAxiosSession(tokens.access.token);
+        await storageSession({
+          refreshToken: tokens.refresh.token,
+          token: tokens.access.token,
+        });
+
+        dispatch({
+          type: Types.INITIAL,
+          payload: {
+            account,
+          },
+        });
+      } else {
+        await removeSession();
+
+        dispatch({
+          type: Types.INITIAL,
+          payload: {
+            account: null,
+          },
+        });
+      }
+    } catch (error) {
+      await removeSession();
+
+      dispatch({
+        type: Types.INITIAL,
+        payload: {
+          account: null,
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    initialize();
+  }, []);
+
+  // LOGIN
+  const login = useCallback(async (email: string, password: string) => {
+    try {
+      setIsLoadingAccount(true);
+
+      const response = await authRepository.login({ email, password });
+
+      const { account, tokens } = response;
+
+      await storageSession({
+        refreshToken: tokens.refresh.token,
+        token: tokens.access.token,
+      });
+
+      setAxiosSession(tokens.access.token);
+
+      dispatch({
+        type: Types.LOGIN,
+        payload: {
+          account,
+        },
+      });
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsLoadingAccount(false);
+    }
+  }, []);
+
+  // UPDATE ACCOUNT
+  const updateAccount = useCallback(async (newAccount: IAccount) => {
+    dispatch({
+      type: Types.UPDATE_USER,
+      payload: {
+        account: newAccount,
+      },
+    });
+  }, []);
+
+  // LOGOUT
+  const logout = useCallback(async (justLogout = false) => {
+    const { refreshToken } = await getSession();
+
+    await removeSession();
+
+    dispatch({
+      type: Types.LOGOUT,
+    });
+
+    if (!justLogout && refreshToken) {
+      try {
+        await authRepository.logout(refreshToken);
+      } catch (error) {
+        // do nothing
+      }
+    }
+  }, []);
+
+  // ----------------------------------------------------------------------
+
+  const checkAuthenticated = state.account
+    ? "authenticated"
+    : "unauthenticated";
+
+  const status = state.loading ? "loading" : checkAuthenticated;
+
+  const memoizedValue = useMemo(
+    () => ({
+      isLoadingAccount,
+      account: state.account,
+      loading: status === "loading",
+      authenticated: status === "authenticated",
+      unauthenticated: status === "unauthenticated",
+      login,
+      logout,
+      updateAccount,
+    }),
+    [login, logout, state.account, status, isLoadingAccount, updateAccount]
+  );
+
+  return (
+    <AuthContext.Provider value={memoizedValue}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
