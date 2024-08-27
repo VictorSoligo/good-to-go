@@ -9,10 +9,9 @@
         "terminal.integrated.defaultProfile.linux": "bash"
       },
       "extensions": [
-          "ms-vscode.vscode-typescript-next",
-          "xdebug.php-debug",
           "bmewburn.vscode-intelephense-client",
           "zobo.php-intellisense",
+          "ms-vscode.vscode-typescript-next",
           "dbaeumer.vscode-eslint",
           "visualstudioexptteam.vscodeintell",
           "visualstudioexptteam.intellicode-api-usage-examples"
