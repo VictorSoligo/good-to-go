@@ -1,29 +1,46 @@
 <?php
 
-use App\Database\Connection;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
+use DI\Container;
 
 require_once __DIR__ . '/vendor/autoload.php';    
 require __DIR__ . '/src/Env/index.php';
 
+$container = new Container();
+
+AppFactory::setContainer($container);
+
 $app = AppFactory::create();
 
-$app->get('/', function (Request $request, Response $response) {
-    $instance = Connection::getInstance();
-    $mysql = $instance->getConnection();
+$app->addBodyParsingMiddleware();
+$app->addRoutingMiddleware();
 
-    $stmt = $mysql->query("SELECT * FROM users");
-    $users = $stmt->fetchAll();
+$app->add(function (ServerRequestInterface $request, RequestHandlerInterface $handler) use ($app): ResponseInterface {
+    if ($request->getMethod() === 'OPTIONS') {
+        $response = $app->getResponseFactory()->createResponse();
+    } else {
+        $response = $handler->handle($request);
+    }
 
-    $data = ['users', $users];
+    $response = $response
+        ->withHeader('Access-Control-Allow-Credentials', 'true')
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', '*')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
+        ->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        ->withHeader('Pragma', 'no-cache');
 
-    $payload = json_encode($data);
+    if (ob_get_contents()) {
+        ob_clean();
+    }
 
-    $response->getBody()->write($payload);
-
-    return $response->withHeader('Content-Type', 'application/json');
+    return $response;
 });
+
+$routes = require __DIR__ . '/src/routes.php';
+$routes($app);
 
 $app->run();
