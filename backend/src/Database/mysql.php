@@ -7,7 +7,7 @@ use PDOException;
 
 class Connection {
   private static $instance = null;
-  private $connection;
+  private PDO $connection;
 
   private function __construct() {
     $host = getenv("MYSQL_HOST");

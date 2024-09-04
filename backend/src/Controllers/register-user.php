@@ -2,15 +2,25 @@
 
 namespace App\Controllers;
 
+use App\Database\Repositories\UsersRepository;
+use App\Domain\Entities\User;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class RegisterUserController {
+  private UsersRepository $usersRepository;
+
+  public function __construct(UsersRepository $usersRepository) {
+    $this->usersRepository = $usersRepository;
+  }
+
   function handle(Request $request, Response $response) {
-    $payload = json_encode(['ok' => true]);
+    $body = $request->getParsedBody();
 
-    $response->getBody()->write($payload);
+    $user = new User(null, $body['name'], $body['email'], $body['password']);
 
-    return $response->withHeader('Content-Type', 'application/json');
+    $this->usersRepository->create($user);
+
+    return $response->withStatus(201);
   }
 }

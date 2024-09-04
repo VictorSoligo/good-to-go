@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0ab574572bae57e64d3989a05c1f712",
+    "content-hash": "ec637bb6b4b06e62d72b8ce4a0767541",
     "packages": [
         {
             "name": "fig/http-message-util",
@@ -946,6 +946,50 @@
                 }
             ],
             "time": "2024-05-31T15:07:36+00:00"
+        },
+        {
+            "name": "uma/dic",
+            "version": "v4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/1ma/DIC.git",
+                "reference": "e15c6028cc3683706e654cc23ed8f10895697251"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/1ma/DIC/zipball/e15c6028cc3683706e654cc23ed8f10895697251",
+                "reference": "e15c6028cc3683706e654cc23ed8f10895697251",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~8.2.0 || ~8.3.0",
+                "psr/container": "^2.0"
+            },
+            "provide": {
+                "psr/container-implementation": "^1.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.57",
+                "phpmetrics/phpmetrics": "^3.0-rc",
+                "phpunit/phpunit": "^11.1",
+                "scrutinizer/ocular": "^1.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "UMA\\DIC\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A minimalistic PSR-11 container",
+            "support": {
+                "issues": "https://github.com/1ma/DIC/issues",
+                "source": "https://github.com/1ma/DIC/tree/v4.0.0"
+            },
+            "time": "2024-05-25T09:58:09+00:00"
         }
     ],
     "packages-dev": [],

@@ -6,6 +6,6 @@ use App\Controllers;
 
 return function (App $app) {
   $app->group('/users', function (Group $group) {
-    $group->get('', Controllers\RegisterUserController::class . ':handle');
+    $group->post('', Controllers\RegisterUserController::class . ':handle');
   });
 };
