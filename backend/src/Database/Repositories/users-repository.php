@@ -19,6 +19,7 @@ class UsersRepository {
         name,
         password_hash,
         role,
+        email,
         created_at
       FROM
         users
@@ -53,6 +54,7 @@ class UsersRepository {
         name,
         password_hash,
         role,
+        email,
         created_at
       FROM
         users
@@ -65,7 +67,7 @@ class UsersRepository {
 
     $userData = $stmt->fetch();
     
-    if (!isset($userData)) {
+    if (!$userData) {
       return null;
     }
 

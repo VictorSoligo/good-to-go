@@ -2,6 +2,7 @@
 
 namespace App\Di;
 
+use App\Controllers\AuthenticateUserController;
 use UMA\DIC\ServiceProvider;
 use UMA\DIC\Container;
 use Psr\Container\ContainerInterface;
@@ -67,6 +68,12 @@ final class AppProvider implements ServiceProvider {
   private function provideControllers(Container $c): void {
     $c->set(RegisterUserController::class, static function (ContainerInterface $c): RegisterUserController {
       return new RegisterUserController(
+        $c->get(UsersRepository::class)
+      );
+    });
+
+    $c->set(AuthenticateUserController::class, static function (ContainerInterface $c): AuthenticateUserController {
+      return new AuthenticateUserController(
         $c->get(UsersRepository::class)
       );
     });

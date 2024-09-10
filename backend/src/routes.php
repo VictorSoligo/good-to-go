@@ -7,5 +7,6 @@ use App\Controllers;
 return function (App $app) {
   $app->group('/users', function (Group $group) {
     $group->post('', Controllers\RegisterUserController::class . ':handle');
+    $group->post('/sessions', Controllers\AuthenticateUserController::class . ':handle');
   });
 };
