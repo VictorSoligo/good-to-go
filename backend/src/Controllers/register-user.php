@@ -17,7 +17,23 @@ class RegisterUserController {
   function handle(Request $request, Response $response) {
     $body = $request->getParsedBody();
 
-    $user = new User(null, $body['name'], $body['email'], $body['password']);
+    $name = $body['name'];
+    $email = $body['email'];
+    $role = $body['role'];
+
+    $userWithSameEmail = $this->usersRepository->findByEmail($email);
+
+    if ($userWithSameEmail) {
+      $response->getBody()->write(json_encode(
+        ["message" => "Usuário já cadastrado"]
+      ));
+
+      return $response->withStatus(409);
+    }
+
+    $passwordHash = password_hash($body['password'], PASSWORD_BCRYPT);
+
+    $user = new User(null, $name, $email, $passwordHash, $role);
 
     $this->usersRepository->create($user);
 
