@@ -29,6 +29,7 @@ final class AppProvider implements ServiceProvider {
       $app->add(new ContentLengthMiddleware());
       $app->addBodyParsingMiddleware();
       $app->addRoutingMiddleware();
+      $app->addErrorMiddleware(true, true, true);
 
       $app->add(function (ServerRequestInterface $request, RequestHandlerInterface $handler) use ($app): ResponseInterface {
         if ($request->getMethod() === 'OPTIONS') {
