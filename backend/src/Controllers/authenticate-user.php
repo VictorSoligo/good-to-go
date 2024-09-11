@@ -45,7 +45,6 @@ class AuthenticateUserController {
 
     $payload = [
       "sub" => $user->id,
-      "role" => $user->role,
       "iat" => $iat, 
       "exp" => $exp, 
     ];

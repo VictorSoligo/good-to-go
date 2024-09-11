@@ -12,8 +12,6 @@ class AuthMiddleware {
     $errorResponse = new Response(401, new Headers(["Content-Type" => "application/json"]));
     $errorResponse->getBody()->write(json_encode(["message" => "Não autenticado"]));
 
-    $response = $handler->handle($request);
-
     $authHeader = $request->getHeaderLine("Authorization");
     
     if (!$authHeader) {
@@ -26,7 +24,9 @@ class AuthMiddleware {
       $rawPayload = JWT::decode($token, new Key(getenv("JWT_SECRET"), 'HS256'));
       $payload = (array) $rawPayload;
 
-      $request->withAttribute("userId", $payload['sub']);
+      $request = $request->withAttribute("userId", $payload['sub']);
+
+      $response = $handler->handle($request);
 
       return $response;
     } catch (\Throwable $th) {

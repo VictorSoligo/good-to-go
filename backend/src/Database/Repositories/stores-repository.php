@@ -2,10 +2,10 @@
 
 namespace App\Database\Repositories;
 
-use App\Domain\Entities\User;
+use App\Domain\Entities\Store;
 use PDO;
 
-class UsersRepository {
+class StoresRepository {
   private PDO $mysql;
   
   public function __construct(PDO $mysql) {
@@ -17,12 +17,10 @@ class UsersRepository {
       SELECT
         id,
         name,
-        password_hash,
-        role,
-        email,
+        adress,
         created_at
       FROM
-        users
+        stores
       WHERE
         id = ?
     ";
@@ -36,34 +34,30 @@ class UsersRepository {
       return null;
     }
 
-    $user = new User(
+    $store = new Store(
       $data["id"], 
       $data["name"], 
-      $data["email"], 
-      $data["password_hash"], 
-      $data["role"]
+      $data["adress"], 
     );
 
-    return $user;
+    return $store;
   }
 
-  public function findByEmail(string $email) {
+  public function findByName(string $name) {
     $sql = "
       SELECT
         id,
         name,
-        password_hash,
-        role,
-        email,
+        adress,
         created_at
       FROM
-        users
+        stores
       WHERE
-        email = ?
+        name = ?
     ";
 
     $stmt = $this->mysql->prepare($sql);
-    $stmt->execute([$email]);
+    $stmt->execute([$name]);
 
     $data = $stmt->fetch();
     
@@ -71,33 +65,27 @@ class UsersRepository {
       return null;
     }
 
-    $user = new User(
+    $store = new Store(
       $data["id"], 
       $data["name"], 
-      $data["email"], 
-      $data["password_hash"], 
-      $data["role"]
+      $data["adress"], 
     );
 
-    return $user;
+    return $store;
   }
 
-  public function create(User $user) {
+  public function create(Store $store) {
     $sql = "
       INSERT INTO
-        users
+        stores
         (
           id,
           name,
-          email,
-          password_hash,
-          role,
+          adress,
           created_at
         )
       VALUES
         (
-          ?,
-          ?,
           ?,
           ?,
           ?,
@@ -108,12 +96,10 @@ class UsersRepository {
     $stmt = $this->mysql->prepare($sql);
 
     $stmt->execute([
-      $user->id,
-      $user->name,
-      $user->email,
-      $user->password,
-      $user->role,
+      $store->id,
+      $store->name,
+      $store->adress,
       date("Y-m-d H:i:s"),
     ]);
-  }
-}
+  } 
+} 

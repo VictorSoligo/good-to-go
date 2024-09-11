@@ -3,6 +3,7 @@
 namespace App\Di;
 
 use App\Controllers\AuthenticateUserController;
+use App\Controllers\CreateStoreController;
 use UMA\DIC\ServiceProvider;
 use UMA\DIC\Container;
 use Psr\Container\ContainerInterface;
@@ -15,6 +16,7 @@ use Slim\Middleware\ContentLengthMiddleware;
 use Slim\Factory\AppFactory;
 use App\Database\Connection;
 use App\Controllers\RegisterUserController;
+use App\Database\Repositories\StoresRepository;
 
 final class AppProvider implements ServiceProvider {
   public function provide(Container $c): void {
@@ -64,6 +66,13 @@ final class AppProvider implements ServiceProvider {
 
       return new UsersRepository($mysql);
     });
+
+    $c->set(StoresRepository::class, static function (): StoresRepository {
+      $instance = Connection::getInstance();
+      $mysql = $instance->getConnection();
+
+      return new StoresRepository($mysql);
+    });
   }
 
   private function provideControllers(Container $c): void {
@@ -76,6 +85,12 @@ final class AppProvider implements ServiceProvider {
     $c->set(AuthenticateUserController::class, static function (ContainerInterface $c): AuthenticateUserController {
       return new AuthenticateUserController(
         $c->get(UsersRepository::class)
+      );
+    });
+
+    $c->set(CreateStoreController::class, static function (ContainerInterface $c): CreateStoreController {
+      return new CreateStoreController(
+        $c->get(StoresRepository::class)
       );
     });
   }
