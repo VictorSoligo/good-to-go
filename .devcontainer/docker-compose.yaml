@@ -10,6 +10,7 @@ services:
       - '8080:8080'
     depends_on:
       - mysql
+
   mysql:
     image: mysql:8.4.1
     container_name: mysql
@@ -23,6 +24,16 @@ services:
     volumes:
       - database:/var/lib/mysql
       - ../database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+  rabbitmq:
+    image: rabbitmq:3.12.12-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: docker
+      RABBITMQ_DEFAULT_PASS: docker
+    ports:
+      - '5672:5672'
+      - '15672:15672'
       
 volumes:
   database:

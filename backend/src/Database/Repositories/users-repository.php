@@ -116,7 +116,7 @@ class UsersRepository {
       $user->email,
       $user->password,
       $user->role,
-      $user->createdAt,
+      $user->createdAt->format("c"),
     ]);
   }
 }

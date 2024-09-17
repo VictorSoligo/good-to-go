@@ -5,7 +5,8 @@
         "php": "^8.3.10",
         "php-di/php-di": "^7.0",
         "uma/dic": "^4.0",
-        "firebase/php-jwt": "^6.10"
+        "firebase/php-jwt": "^6.10",
+        "php-amqplib/php-amqplib": "^3.2"
     },
     "autoload": {
         "classmap": ["src/"]
