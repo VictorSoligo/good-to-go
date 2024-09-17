@@ -10,7 +10,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 class RabbitMq {
   private static $instance = null;
   private AMQPStreamConnection $connection;
-  private AMQPChannel $channel;
+  public AMQPChannel $channel;
 
   private function __construct() {
     $host = getenv("RABBITMQ_HOST");
@@ -23,9 +23,7 @@ class RabbitMq {
 
       $this->channel->exchange_declare('good-to-go', 'topic');
       $this->channel->queue_declare("user-registration");
-
       $this->channel->queue_bind("user-registration", "good-to-go", "user-registration");
-
     } catch (Exception $e) {
       die("Database connection failed: " . $e->getMessage());
     }
