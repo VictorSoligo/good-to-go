@@ -3,6 +3,7 @@
 namespace App\Database\Repositories;
 
 use App\Domain\Entities\Store;
+use App\Domain\Entities\Date;
 use PDO;
 
 class StoresRepository {
@@ -39,7 +40,8 @@ class StoresRepository {
       $data["id"], 
       $data["name"], 
       $data["adress"], 
-      $data["owner_id"], 
+      $data["owner_id"],
+      new Date($data["created_at"]),
     );
 
     return $store;
@@ -73,6 +75,7 @@ class StoresRepository {
       $data["name"], 
       $data["adress"],
       $data["owner_id"], 
+      new Date($data["created_at"]),
     );
 
     return $store;
@@ -106,6 +109,7 @@ class StoresRepository {
           $s["name"], 
           $s["adress"],
           $s["owner_id"],
+          new Date($s["created_at"]),
         );
 
         array_push($stores, $store);
@@ -142,7 +146,7 @@ class StoresRepository {
       $store->id,
       $store->name,
       $store->adress,
-      date("Y-m-d H:i:s"),
+      $store->createdAt,
       $store->ownerId,
     ]);
   } 

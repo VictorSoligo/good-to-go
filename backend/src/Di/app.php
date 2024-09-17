@@ -6,6 +6,7 @@ use App\Controllers\AuthenticateUserController;
 use App\Controllers\CreateStoreController;
 use App\Controllers\FetchOwnerStoresController;
 use App\Controllers\GetStoreController;
+use App\Controllers\GetUserProfileController;
 use UMA\DIC\ServiceProvider;
 use UMA\DIC\Container;
 use Psr\Container\ContainerInterface;
@@ -105,6 +106,12 @@ final class AppProvider implements ServiceProvider {
     $c->set(FetchOwnerStoresController::class, static function (ContainerInterface $c): FetchOwnerStoresController {
       return new FetchOwnerStoresController(
         $c->get(StoresRepository::class)
+      );
+    });
+
+    $c->set(GetUserProfileController::class, static function (ContainerInterface $c): GetUserProfileController {
+      return new GetUserProfileController(
+        $c->get(UsersRepository::class)
       );
     });
   }

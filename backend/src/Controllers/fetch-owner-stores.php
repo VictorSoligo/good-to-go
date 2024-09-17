@@ -15,7 +15,7 @@ class FetchOwnerStoresController {
 
   function handle(Request $request, Response $response, array $args) {
     $userId = $request->getAttribute('userId');
-   
+
     $stores = $this->storesRepository->findManyByOwnerId($userId);
 
     $response->getBody()->write(json_encode([

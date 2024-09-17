@@ -33,7 +33,7 @@ class RegisterUserController {
 
     $passwordHash = password_hash($body['password'], PASSWORD_BCRYPT);
 
-    $user = new User(null, $name, $email, $passwordHash, $role);
+    $user = new User(null, $name, $email, $passwordHash, $role, null);
 
     $this->usersRepository->create($user);
 

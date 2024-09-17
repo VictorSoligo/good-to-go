@@ -10,6 +10,7 @@ return function (App $app) {
   $app->group('/users', function (Group $group) {
     $group->post('', Controllers\RegisterUserController::class . ':handle');
     $group->post('/sessions', Controllers\AuthenticateUserController::class . ':handle');
+    $group->get('/me', Controllers\GetUserProfileController::class . ':handle')->add(new AuthMiddleware());
   });
 
   $app->group('/stores', function (Group $group) {

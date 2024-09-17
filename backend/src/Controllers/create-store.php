@@ -31,7 +31,7 @@ class CreateStoreController {
       return $response->withStatus(409);
     }
 
-    $store = new Store(null, $name, $adress, $userId);
+    $store = new Store(null, $name, $adress, $userId, null);
 
     $this->storesRepository->create($store);
 

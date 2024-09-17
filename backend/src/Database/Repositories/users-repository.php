@@ -2,6 +2,7 @@
 
 namespace App\Database\Repositories;
 
+use App\Domain\Entities\Date;
 use App\Domain\Entities\User;
 use PDO;
 
@@ -41,7 +42,8 @@ class UsersRepository {
       $data["name"], 
       $data["email"], 
       $data["password_hash"], 
-      $data["role"]
+      $data["role"],
+      new Date($data["created_at"]),
     );
 
     return $user;
@@ -76,7 +78,8 @@ class UsersRepository {
       $data["name"], 
       $data["email"], 
       $data["password_hash"], 
-      $data["role"]
+      $data["role"],
+      new Date($data["created_at"]),
     );
 
     return $user;
@@ -113,7 +116,7 @@ class UsersRepository {
       $user->email,
       $user->password,
       $user->role,
-      date("Y-m-d H:i:s"),
+      $user->createdAt,
     ]);
   }
 }
