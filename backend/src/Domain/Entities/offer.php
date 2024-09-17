@@ -25,4 +25,8 @@ class Offer {
     $this->canceledAt = isset($canceledAt) ? $canceledAt : null;
     $this->createdAt = isset($createdAt) ? $createdAt : new Date();
   }
+
+  public function cancel() {
+    $this->canceledAt = new Date();
+  }
 } 

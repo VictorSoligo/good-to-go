@@ -3,6 +3,7 @@
 namespace App\Di;
 
 use App\Controllers\AuthenticateUserController;
+use App\Controllers\CancelOfferController;
 use App\Controllers\CreateOfferController;
 use App\Controllers\CreateStoreController;
 use App\Controllers\FetchOwnerStoresController;
@@ -126,6 +127,13 @@ final class AppProvider implements ServiceProvider {
 
     $c->set(CreateOfferController::class, static function (ContainerInterface $c): CreateOfferController {
       return new CreateOfferController(
+        $c->get(OffersRepository::class),
+        $c->get(StoresRepository::class),
+      );
+    });
+
+    $c->set(CancelOfferController::class, static function (ContainerInterface $c): CancelOfferController {
+      return new CancelOfferController(
         $c->get(OffersRepository::class),
         $c->get(StoresRepository::class),
       );
