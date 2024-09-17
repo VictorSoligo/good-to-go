@@ -18,4 +18,8 @@ return function (App $app) {
     $group->get('/owner', Controllers\FetchOwnerStoresController::class . ':handle');
     $group->get('/id/{id}', Controllers\GetStoreController::class . ':handle');
   })->add(new AuthMiddleware());
+
+  $app->group('/offers', function (Group $group) {
+    $group->post('', Controllers\CreateOfferController::class . ':handle')->add(new EnsureManagerMiddleware());
+  })->add(new AuthMiddleware());
 };

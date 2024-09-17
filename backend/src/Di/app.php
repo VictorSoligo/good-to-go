@@ -3,6 +3,7 @@
 namespace App\Di;
 
 use App\Controllers\AuthenticateUserController;
+use App\Controllers\CreateOfferController;
 use App\Controllers\CreateStoreController;
 use App\Controllers\FetchOwnerStoresController;
 use App\Controllers\GetStoreController;
@@ -19,6 +20,7 @@ use Slim\Middleware\ContentLengthMiddleware;
 use Slim\Factory\AppFactory;
 use App\Database\Connection;
 use App\Controllers\RegisterUserController;
+use App\Database\Repositories\OffersRepository;
 use App\Database\Repositories\StoresRepository;
 
 final class AppProvider implements ServiceProvider {
@@ -76,6 +78,13 @@ final class AppProvider implements ServiceProvider {
 
       return new StoresRepository($mysql);
     });
+
+    $c->set(OffersRepository::class, static function (): OffersRepository {
+      $instance = Connection::getInstance();
+      $mysql = $instance->getConnection();
+
+      return new OffersRepository($mysql);
+    });
   }
 
   private function provideControllers(Container $c): void {
@@ -112,6 +121,13 @@ final class AppProvider implements ServiceProvider {
     $c->set(GetUserProfileController::class, static function (ContainerInterface $c): GetUserProfileController {
       return new GetUserProfileController(
         $c->get(UsersRepository::class)
+      );
+    });
+
+    $c->set(CreateOfferController::class, static function (ContainerInterface $c): CreateOfferController {
+      return new CreateOfferController(
+        $c->get(OffersRepository::class),
+        $c->get(StoresRepository::class),
       );
     });
   }

@@ -146,7 +146,7 @@ class StoresRepository {
       $store->id,
       $store->name,
       $store->adress,
-      $store->createdAt,
+      $store->createdAt->format("c"),
       $store->ownerId,
     ]);
   } 

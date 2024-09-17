@@ -16,6 +16,26 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `offers`
+--
+
+DROP TABLE IF EXISTS `offers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `offers` (
+  `id` varchar(255) NOT NULL,
+  `store_id` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `canceled_at` datetime DEFAULT NULL,
+  `available_until` datetime NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `offers_stores_id_fk` (`store_id`),
+  CONSTRAINT `offers_stores_id_fk` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `stores`
 --
 
@@ -61,4 +81,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-17 12:36:11
+-- Dump completed on 2024-09-17 13:53:25
