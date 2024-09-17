@@ -29,6 +29,7 @@ CREATE TABLE `offers` (
   `canceled_at` datetime DEFAULT NULL,
   `available_until` datetime NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `price` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `offers_stores_id_fk` (`store_id`),
   CONSTRAINT `offers_stores_id_fk` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`)
@@ -81,4 +82,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-17 13:53:25
+-- Dump completed on 2024-09-17 22:37:59

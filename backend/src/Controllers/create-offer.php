@@ -28,6 +28,7 @@ class CreateOfferController {
 
     $description = $body['description'];
     $availableUntil = $body['availableUntil'];
+    $price = $body['price'];
     $storeId = $body['storeId'];
 
     $store = $this->storesRepository->findById($storeId);
@@ -52,6 +53,7 @@ class CreateOfferController {
       null, 
       $storeId, 
       $description, 
+      $price,
       new Date($availableUntil), 
       null, 
       null

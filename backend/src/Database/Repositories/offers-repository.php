@@ -22,6 +22,7 @@ class OffersRepository {
         description,
         available_until,
         canceled_at,
+        price,
         created_at
       FROM
         offers
@@ -42,6 +43,7 @@ class OffersRepository {
       $data["id"], 
       $data["store_id"], 
       $data["description"], 
+      $data["price"],
       new Date($data["available_until"]),
       $data["canceled_at"] ? new Date($data["canceled_at"]) : null,
       new Date($data["created_at"]),
@@ -59,6 +61,7 @@ class OffersRepository {
         offers.available_until,
         offers.canceled_at,
         offers.created_at,
+        offers.price,
         stores.name AS store_name
       FROM
         offers
@@ -84,7 +87,8 @@ class OffersRepository {
           $s["id"], 
           $s["store_id"],
           $s["store_name"],
-          $s["description"], 
+          $s["description"],
+          $s["price"], 
           new Date($s["available_until"]),
           $s["canceled_at"] ? new Date($s["canceled_at"]) : null,
           new Date($s["created_at"]),
@@ -106,10 +110,12 @@ class OffersRepository {
           store_id,
           description,
           available_until,
-          created_at
+          created_at,
+          price
         )
       VALUES
         (
+          ?,
           ?,
           ?,
           ?,
@@ -126,6 +132,7 @@ class OffersRepository {
       $offer->description,
       $offer->availableUntil->format("c"),
       $offer->createdAt->format("c"),
+      $offer->price,
     ]);
   }
   

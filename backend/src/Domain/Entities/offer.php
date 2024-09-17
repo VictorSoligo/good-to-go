@@ -6,6 +6,7 @@ class Offer {
   public string $id;
   public string $storeId;
   public string $description;
+  public int $price; 
   public Date $availableUntil;
   public ?Date $canceledAt;
   public Date $createdAt;
@@ -14,6 +15,7 @@ class Offer {
     ?string $id,
     string $storeId,
     string $description,
+    int $price,
     Date $availableUntil,
     ?Date $canceledAt,
     ?Date $createdAt
@@ -21,6 +23,7 @@ class Offer {
     $this->id = isset($id) ? $id : uniqid();
     $this->storeId = $storeId;
     $this->description = $description;
+    $this->price = $price;
     $this->availableUntil = $availableUntil;
     $this->canceledAt = isset($canceledAt) ? $canceledAt : null;
     $this->createdAt = isset($createdAt) ? $createdAt : new Date();

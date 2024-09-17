@@ -9,6 +9,7 @@ class EssentialOffer implements \JsonSerializable {
   public string $storeId;
   public string $storeName;
   public string $description;
+  public int $price;
   public Date $availableUntil;
   public ?Date $canceledAt;
   public Date $createdAt;
@@ -18,6 +19,7 @@ class EssentialOffer implements \JsonSerializable {
     string $storeId,
     string $storeName,
     string $description,
+    int $price,
     Date $availableUntil,
     ?Date $canceledAt,
     Date $createdAt,
@@ -29,12 +31,14 @@ class EssentialOffer implements \JsonSerializable {
     $this->availableUntil = $availableUntil;
     $this->canceledAt = $canceledAt;
     $this->createdAt = $createdAt;
+    $this->price = $price;
   }
 
   public function jsonSerialize(): mixed {
     return [
       "id" => $this->id,
       "description" => $this->description,
+      "price" => $this->price,
       "store" => [
         "id" => $this->storeId,
         "name" => $this->storeName
