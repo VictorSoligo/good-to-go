@@ -6,6 +6,7 @@ use App\Controllers\AuthenticateUserController;
 use App\Controllers\CancelOfferController;
 use App\Controllers\CreateOfferController;
 use App\Controllers\CreateStoreController;
+use App\Controllers\FetchActiveOffersController;
 use App\Controllers\FetchOwnerStoresController;
 use App\Controllers\GetStoreController;
 use App\Controllers\GetUserProfileController;
@@ -136,6 +137,12 @@ final class AppProvider implements ServiceProvider {
       return new CancelOfferController(
         $c->get(OffersRepository::class),
         $c->get(StoresRepository::class),
+      );
+    });
+
+    $c->set(FetchActiveOffersController::class, static function (ContainerInterface $c): FetchActiveOffersController {
+      return new FetchActiveOffersController(
+        $c->get(OffersRepository::class),
       );
     });
   }

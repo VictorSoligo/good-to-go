@@ -3,6 +3,7 @@
 namespace App\Database\Repositories;
 
 use App\Domain\Entities\Offer;
+use App\Dtos\EssentialOffer;
 use App\Domain\Entities\Date;
 use PDO;
 
@@ -49,23 +50,29 @@ class OffersRepository {
     return $offer;
   }
 
-  public function findManyByStoreId(string $storeId) {
+  public function findManyActive() {
     $sql = <<<SQL
       SELECT
-        id,
-        store_id,
-        description,
-        available_until,
-        canceled_at,
-        created_at
+        offers.id,
+        offers.store_id,
+        offers.description,
+        offers.available_until,
+        offers.canceled_at,
+        offers.created_at,
+        stores.name AS store_name
       FROM
         offers
+      INNER JOIN stores ON stores.id = offers.store_id
       WHERE
-        store_id = ?
+        offers.canceled_at IS NULL
+      AND
+        offers.available_until > NOW()
+      ORDER BY
+        offers.created_at DESC
     SQL;
 
     $stmt = $this->mysql->prepare($sql);
-    $stmt->execute([$storeId]);
+    $stmt->execute();
 
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -73,9 +80,10 @@ class OffersRepository {
 
     if (count($data) > 0) {
       foreach ($data as $s) {
-        $offer = new Offer(
+        $offer = new EssentialOffer(
           $s["id"], 
-          $s["store_id"], 
+          $s["store_id"],
+          $s["store_name"],
           $s["description"], 
           new Date($s["available_until"]),
           $s["canceled_at"] ? new Date($s["canceled_at"]) : null,
