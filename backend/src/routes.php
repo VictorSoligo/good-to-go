@@ -14,5 +14,7 @@ return function (App $app) {
 
   $app->group('/stores', function (Group $group) {
     $group->post('', Controllers\CreateStoreController::class . ':handle')->add(new EnsureManagerMiddleware());
+    $group->get('/owner', Controllers\FetchOwnerStoresController::class . ':handle');
+    $group->get('/id/{id}', Controllers\GetStoreController::class . ':handle');
   })->add(new AuthMiddleware());
 };

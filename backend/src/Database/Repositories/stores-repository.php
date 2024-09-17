@@ -18,6 +18,7 @@ class StoresRepository {
         id,
         name,
         adress,
+        owner_id,
         created_at
       FROM
         stores
@@ -30,7 +31,7 @@ class StoresRepository {
 
     $data = $stmt->fetch();
     
-    if (!isset($data)) {
+    if (!$data) {
       return null;
     }
 
@@ -38,6 +39,7 @@ class StoresRepository {
       $data["id"], 
       $data["name"], 
       $data["adress"], 
+      $data["owner_id"], 
     );
 
     return $store;
@@ -49,6 +51,7 @@ class StoresRepository {
         id,
         name,
         adress,
+        owner_id,
         created_at
       FROM
         stores
@@ -68,10 +71,48 @@ class StoresRepository {
     $store = new Store(
       $data["id"], 
       $data["name"], 
-      $data["adress"], 
+      $data["adress"],
+      $data["owner_id"], 
     );
 
     return $store;
+  }
+
+  public function findManyByOwnerId(string $ownerId) {
+    $sql = "
+      SELECT
+        id,
+        name,
+        adress,
+        owner_id,
+        created_at
+      FROM
+        stores
+      WHERE
+        owner_id = ?
+    ";
+
+    $stmt = $this->mysql->prepare($sql);
+    $stmt->execute([$ownerId]);
+
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stores = [];
+
+    if (count($data) > 0) {
+      foreach ($data as $s) {
+        $store = new Store(
+          $s["id"], 
+          $s["name"], 
+          $s["adress"],
+          $s["owner_id"],
+        );
+
+        array_push($stores, $store);
+      }
+    }
+
+    return $stores;
   }
 
   public function create(Store $store) {
@@ -82,10 +123,12 @@ class StoresRepository {
           id,
           name,
           adress,
-          created_at
+          created_at,
+          owner_id
         )
       VALUES
         (
+          ?,
           ?,
           ?,
           ?,
@@ -100,6 +143,7 @@ class StoresRepository {
       $store->name,
       $store->adress,
       date("Y-m-d H:i:s"),
+      $store->ownerId,
     ]);
   } 
 } 

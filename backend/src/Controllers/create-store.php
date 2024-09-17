@@ -19,6 +19,7 @@ class CreateStoreController {
 
     $name = $body['name'];
     $adress = $body['adress'];
+    $userId = $request->getAttribute('userId');
 
     $storeWithSameName = $this->storesRepository->findByName($name);
 
@@ -30,8 +31,7 @@ class CreateStoreController {
       return $response->withStatus(409);
     }
 
-
-    $store = new Store(null, $name, $adress);
+    $store = new Store(null, $name, $adress, $userId);
 
     $this->storesRepository->create($store);
 

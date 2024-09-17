@@ -4,6 +4,8 @@ namespace App\Di;
 
 use App\Controllers\AuthenticateUserController;
 use App\Controllers\CreateStoreController;
+use App\Controllers\FetchOwnerStoresController;
+use App\Controllers\GetStoreController;
 use UMA\DIC\ServiceProvider;
 use UMA\DIC\Container;
 use Psr\Container\ContainerInterface;
@@ -90,6 +92,18 @@ final class AppProvider implements ServiceProvider {
 
     $c->set(CreateStoreController::class, static function (ContainerInterface $c): CreateStoreController {
       return new CreateStoreController(
+        $c->get(StoresRepository::class)
+      );
+    });
+
+    $c->set(GetStoreController::class, static function (ContainerInterface $c): GetStoreController {
+      return new GetStoreController(
+        $c->get(StoresRepository::class)
+      );
+    });
+
+    $c->set(FetchOwnerStoresController::class, static function (ContainerInterface $c): FetchOwnerStoresController {
+      return new FetchOwnerStoresController(
         $c->get(StoresRepository::class)
       );
     });

@@ -13,14 +13,13 @@ services:
   mysql:
     image: mysql:8.4.1
     container_name: mysql
-    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=goodtogo
     ports:
-      - '3306:3306'
+      - '3307:3306'
     expose:
-      - '3306'
+      - '3307'
     volumes:
       - database:/var/lib/mysql
       - ../database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
