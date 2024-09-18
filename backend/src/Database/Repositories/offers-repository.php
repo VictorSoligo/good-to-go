@@ -118,16 +118,35 @@ class OffersRepository {
     $offers = [];
 
     if (count($data) > 0) {
-      foreach ($data as $s) {
+      foreach ($data as $o) {
+        $offerId = $o["id"];
+
+        $attachmentsSql = <<<SQL
+          SELECT
+            offers_attachments.id AS id,
+            attachments.url AS url
+          FROM
+            offers_attachments
+          INNER JOIN attachments ON attachments.id = offers_attachments.attachment_id
+          WHERE
+            offers_attachments.offer_id = ?
+        SQL;
+
+        $stmt = $this->mysql->prepare($attachmentsSql);
+        $stmt->execute([$offerId]);
+
+        $attachments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         $offer = new EssentialOffer(
-          $s["id"], 
-          $s["store_id"],
-          $s["store_name"],
-          $s["description"],
-          $s["price"], 
-          new Date($s["available_until"]),
-          $s["canceled_at"] ? new Date($s["canceled_at"]) : null,
-          new Date($s["created_at"]),
+          $offerId, 
+          $o["store_id"],
+          $o["store_name"],
+          $o["description"],
+          $o["price"],
+          $attachments,
+          new Date($o["available_until"]),
+          $o["canceled_at"] ? new Date($o["canceled_at"]) : null,
+          new Date($o["created_at"]),
         );
 
         array_push($offers, $offer);
