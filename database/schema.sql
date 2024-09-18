@@ -56,6 +56,25 @@ CREATE TABLE `offers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `offers_attachments`
+--
+
+DROP TABLE IF EXISTS `offers_attachments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `offers_attachments` (
+  `id` varchar(255) NOT NULL,
+  `offer_id` varchar(255) NOT NULL,
+  `attachment_id` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `offers_attachments_attachments_id_fk` (`attachment_id`),
+  KEY `offers_attachments_offers_id_fk` (`offer_id`),
+  CONSTRAINT `offers_attachments_attachments_id_fk` FOREIGN KEY (`attachment_id`) REFERENCES `attachments` (`id`),
+  CONSTRAINT `offers_attachments_offers_id_fk` FOREIGN KEY (`offer_id`) REFERENCES `offers` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `stores`
 --
 
@@ -104,4 +123,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-18 11:58:30
+-- Dump completed on 2024-09-18 12:56:21

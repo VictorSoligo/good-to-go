@@ -5,6 +5,7 @@ namespace App\Database\Repositories;
 use App\Domain\Entities\Offer;
 use App\Dtos\EssentialOffer;
 use App\Domain\Entities\Date;
+use App\Domain\Entities\OfferAttachment;
 use PDO;
 
 class OffersRepository {
@@ -39,11 +40,46 @@ class OffersRepository {
       return null;
     }
 
+    $offerId = $data["id"];
+
+    $attachmentsSql = <<<SQL
+      SELECT
+        id,
+        offer_id,
+        attachment_id
+      FROM
+        offers_attachments
+      WHERE
+        offer_id = ?
+    SQL;
+
+    $stmt = $this->mysql->prepare($attachmentsSql);
+    $stmt->execute([$offerId]);
+
+    $attachmentsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!$attachmentsData || count($attachmentsData) === 0) {
+      return null;
+    }
+
+    $attachments = [];
+
+    foreach ($attachmentsData as $a) {
+      $offerAttachment = new OfferAttachment(
+        $a["id"],
+        $a["offer_id"],
+        $a["attachment_id"],
+      );
+
+      array_push($attachments, $offerAttachment);
+    }
+
     $offer = new Offer(
-      $data["id"], 
+      $offerId, 
       $data["store_id"], 
       $data["description"], 
       $data["price"],
+      $attachments,
       new Date($data["available_until"]),
       $data["canceled_at"] ? new Date($data["canceled_at"]) : null,
       new Date($data["created_at"]),
@@ -134,6 +170,32 @@ class OffersRepository {
       $offer->createdAt->format("c"),
       $offer->price,
     ]);
+
+    foreach ($offer->attachments as $attachment) {
+      $attachmentsSql = <<<SQL
+        INSERT INTO
+          offers_attachments
+          (
+            id,
+            offer_id,
+            attachment_id
+          )
+        VALUES
+          (
+            ?,
+            ?,
+            ?
+          )
+      SQL;
+
+      $stmt = $this->mysql->prepare($attachmentsSql);
+
+      $stmt->execute([
+        $attachment->id,
+        $attachment->offerId,
+        $attachment->attachmentId,
+      ]);
+    }
   }
   
   public function save(Offer $offer) {

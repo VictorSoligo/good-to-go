@@ -8,6 +8,7 @@ class Offer {
   public string $description;
   public int $price; 
   public Date $availableUntil;
+  public array $attachments;
   public ?Date $canceledAt;
   public Date $createdAt;
 
@@ -16,6 +17,7 @@ class Offer {
     string $storeId,
     string $description,
     int $price,
+    array $attachments,
     Date $availableUntil,
     ?Date $canceledAt,
     ?Date $createdAt
@@ -24,6 +26,7 @@ class Offer {
     $this->storeId = $storeId;
     $this->description = $description;
     $this->price = $price;
+    $this->attachments = $attachments;
     $this->availableUntil = $availableUntil;
     $this->canceledAt = isset($canceledAt) ? $canceledAt : null;
     $this->createdAt = isset($createdAt) ? $createdAt : new Date();

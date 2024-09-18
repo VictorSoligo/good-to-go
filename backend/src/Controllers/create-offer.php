@@ -6,6 +6,7 @@ use App\Database\Repositories\OffersRepository;
 use App\Database\Repositories\StoresRepository;
 use App\Domain\Entities\Date;
 use App\Domain\Entities\Offer;
+use App\Domain\Entities\OfferAttachment;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -30,6 +31,15 @@ class CreateOfferController {
     $availableUntil = $body['availableUntil'];
     $price = $body['price'];
     $storeId = $body['storeId'];
+    $attachmentsIds = $body['attachmentsIds'];
+
+    if (!$attachmentsIds || count($attachmentsIds) === 0) {
+      $response->getBody()->write(json_encode(
+        ["message" => "Informe pelo menos uma midia"]
+      ));
+
+      return $response->withStatus(400);
+    }
 
     $store = $this->storesRepository->findById($storeId);
 
@@ -49,11 +59,22 @@ class CreateOfferController {
       return $response->withStatus(403);
     }
 
+    $offerId = uniqid();
+
+    $attachments = [];
+
+    foreach ($attachmentsIds as $attachmentId) {
+      $offerAttachment = new OfferAttachment(null, $offerId, $attachmentId);
+
+      array_push($attachments, $offerAttachment);
+    }
+
     $offer = new Offer(
-      null, 
+      $offerId, 
       $storeId, 
       $description, 
       $price,
+      $attachments,
       new Date($availableUntil), 
       null, 
       null
