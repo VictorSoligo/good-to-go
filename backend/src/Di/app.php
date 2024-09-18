@@ -142,6 +142,7 @@ final class AppProvider implements ServiceProvider {
       return new CreateOfferController(
         $c->get(OffersRepository::class),
         $c->get(StoresRepository::class),
+        $c->get(AttachmentsRepository::class),
       );
     });
 
