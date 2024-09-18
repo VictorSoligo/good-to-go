@@ -8,6 +8,7 @@ use App\Controllers\CreateOfferController;
 use App\Controllers\CreateStoreController;
 use App\Controllers\FetchActiveOffersController;
 use App\Controllers\FetchOwnerStoresController;
+use App\Controllers\GetAttachmentController;
 use App\Controllers\GetStoreController;
 use App\Controllers\GetUserProfileController;
 use UMA\DIC\ServiceProvider;
@@ -161,6 +162,10 @@ final class AppProvider implements ServiceProvider {
       return new UploadAttachmentController(
         $c->get(AttachmentsRepository::class),
       );
+    });
+
+    $c->set(GetAttachmentController::class, static function (): GetAttachmentController {
+      return new GetAttachmentController();
     });
   }
 }

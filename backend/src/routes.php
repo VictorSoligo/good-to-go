@@ -27,5 +27,6 @@ return function (App $app) {
 
   $app->group('/attachments', function (Group $group) {
     $group->post('', Controllers\UploadAttachmentController::class . ':handle')->add(new EnsureManagerMiddleware());
+    $group->get('/{url}', Controllers\GetAttachmentController::class . ':handle');
   })->add(new AuthMiddleware());
 };
