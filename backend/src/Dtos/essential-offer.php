@@ -44,8 +44,8 @@ class EssentialOffer implements \JsonSerializable {
         "name" => $this->storeName
       ],
       "availableUntil" => $this->availableUntil,
-      "createdAt" => $this->createdAt,
       "canceledAt" => $this->canceledAt,
+      "createdAt" => $this->createdAt,
     ];
   }
 }

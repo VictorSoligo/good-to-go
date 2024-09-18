@@ -26,6 +26,7 @@ use App\Controllers\UploadAttachmentController;
 use App\Database\Repositories\AttachmentsRepository;
 use App\Database\Repositories\OffersRepository;
 use App\Database\Repositories\StoresRepository;
+use App\Domain\Entities\Attachment;
 
 final class AppProvider implements ServiceProvider {
   public function provide(Container $c): void {
@@ -113,7 +114,8 @@ final class AppProvider implements ServiceProvider {
 
     $c->set(CreateStoreController::class, static function (ContainerInterface $c): CreateStoreController {
       return new CreateStoreController(
-        $c->get(StoresRepository::class)
+        $c->get(StoresRepository::class),
+        $c->get(AttachmentsRepository::class),
       );
     });
 

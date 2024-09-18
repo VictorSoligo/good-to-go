@@ -16,7 +16,7 @@ class GetStoreController {
   function handle(Request $request, Response $response, array $args) {
     $storeId = $args['id'];
    
-    $store = $this->storesRepository->findById($storeId);
+    $store = $this->storesRepository->findEssentialById($storeId);
 
     if (!$store) {
       $response->getBody()->write(json_encode(

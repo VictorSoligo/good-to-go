@@ -33,7 +33,7 @@ class UsersRepository {
 
     $data = $stmt->fetch();
     
-    if (!isset($data)) {
+    if (!$data) {
       return null;
     }
 

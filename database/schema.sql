@@ -68,8 +68,11 @@ CREATE TABLE `stores` (
   `adress` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `owner_id` varchar(255) NOT NULL,
+  `attachment_id` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `stores_users_id_fk` (`owner_id`),
+  KEY `stores_attachments_id_fk` (`attachment_id`),
+  CONSTRAINT `stores_attachments_id_fk` FOREIGN KEY (`attachment_id`) REFERENCES `attachments` (`id`),
   CONSTRAINT `stores_users_id_fk` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -101,4 +104,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-17 23:01:48
+-- Dump completed on 2024-09-18 11:58:30

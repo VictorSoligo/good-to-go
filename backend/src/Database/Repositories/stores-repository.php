@@ -4,6 +4,7 @@ namespace App\Database\Repositories;
 
 use App\Domain\Entities\Store;
 use App\Domain\Entities\Date;
+use App\Dtos\EssentialStore;
 use PDO;
 
 class StoresRepository {
@@ -20,7 +21,8 @@ class StoresRepository {
         name,
         adress,
         owner_id,
-        created_at
+        created_at,
+        attachment_id
       FROM
         stores
       WHERE
@@ -41,6 +43,46 @@ class StoresRepository {
       $data["name"], 
       $data["adress"], 
       $data["owner_id"],
+      $data["attachment_id"],
+      new Date($data["created_at"]),
+    );
+
+    return $store;
+  }
+
+  public function findEssentialById(string $id) {
+    $sql = "
+      SELECT
+        stores.id,
+        stores.name,
+        stores.adress,
+        stores.owner_id,
+        stores.created_at,
+        stores.attachment_id,
+        attachments.url AS attachment_url
+      FROM
+        stores
+      INNER JOIN attachments ON attachments.id = stores.attachment_id
+      WHERE
+        stores.id = ?
+    ";
+
+    $stmt = $this->mysql->prepare($sql);
+    $stmt->execute([$id]);
+
+    $data = $stmt->fetch();
+    
+    if (!$data) {
+      return null;
+    }
+
+    $store = new EssentialStore(
+      $data["id"], 
+      $data["name"], 
+      $data["adress"], 
+      $data["owner_id"],
+      $data["attachment_id"],
+      $data["attachment_url"],
       new Date($data["created_at"]),
     );
 
@@ -54,7 +96,8 @@ class StoresRepository {
         name,
         adress,
         owner_id,
-        created_at
+        created_at,
+        attachment_id
       FROM
         stores
       WHERE
@@ -75,6 +118,7 @@ class StoresRepository {
       $data["name"], 
       $data["adress"],
       $data["owner_id"], 
+      $data["attachment_id"],
       new Date($data["created_at"]),
     );
 
@@ -84,15 +128,20 @@ class StoresRepository {
   public function findManyByOwnerId(string $ownerId) {
     $sql = "
       SELECT
-        id,
-        name,
-        adress,
-        owner_id,
-        created_at
+        stores.id,
+        stores.name,
+        stores.adress,
+        stores.owner_id,
+        stores.created_at,
+        stores.attachment_id,
+        attachments.url AS attachment_url
       FROM
         stores
+      INNER JOIN attachments ON attachments.id = stores.attachment_id
       WHERE
-        owner_id = ?
+        stores.owner_id = ?
+      ORDER BY
+        stores.created_at DESC
     ";
 
     $stmt = $this->mysql->prepare($sql);
@@ -104,11 +153,13 @@ class StoresRepository {
 
     if (count($data) > 0) {
       foreach ($data as $s) {
-        $store = new Store(
+        $store = new EssentialStore(
           $s["id"], 
           $s["name"], 
-          $s["adress"],
+          $s["adress"], 
           $s["owner_id"],
+          $s["attachment_id"],
+          $s["attachment_url"],
           new Date($s["created_at"]),
         );
 
@@ -128,10 +179,12 @@ class StoresRepository {
           name,
           adress,
           created_at,
-          owner_id
+          owner_id,
+          attachment_id
         )
       VALUES
         (
+          ?,
           ?,
           ?,
           ?,
@@ -148,6 +201,7 @@ class StoresRepository {
       $store->adress,
       $store->createdAt->format("c"),
       $store->ownerId,
+      $store->attachmentId,
     ]);
   } 
 } 
