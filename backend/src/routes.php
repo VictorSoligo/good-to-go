@@ -24,4 +24,8 @@ return function (App $app) {
     $group->patch('/{id}/cancel', Controllers\CancelOfferController::class . ':handle')->add(new EnsureManagerMiddleware());
     $group->get('/active', Controllers\FetchActiveOffersController::class . ':handle');
   })->add(new AuthMiddleware());
+
+  $app->group('/attachments', function (Group $group) {
+    $group->post('', Controllers\UploadAttachmentController::class . ':handle')->add(new EnsureManagerMiddleware());
+  })->add(new AuthMiddleware());
 };

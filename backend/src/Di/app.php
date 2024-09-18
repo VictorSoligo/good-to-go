@@ -22,6 +22,8 @@ use Slim\Middleware\ContentLengthMiddleware;
 use Slim\Factory\AppFactory;
 use App\Database\Connection;
 use App\Controllers\RegisterUserController;
+use App\Controllers\UploadAttachmentController;
+use App\Database\Repositories\AttachmentsRepository;
 use App\Database\Repositories\OffersRepository;
 use App\Database\Repositories\StoresRepository;
 
@@ -87,6 +89,13 @@ final class AppProvider implements ServiceProvider {
 
       return new OffersRepository($mysql);
     });
+
+    $c->set(AttachmentsRepository::class, static function (): AttachmentsRepository {
+      $instance = Connection::getInstance();
+      $mysql = $instance->getConnection();
+
+      return new AttachmentsRepository($mysql);
+    });
   }
 
   private function provideControllers(Container $c): void {
@@ -143,6 +152,12 @@ final class AppProvider implements ServiceProvider {
     $c->set(FetchActiveOffersController::class, static function (ContainerInterface $c): FetchActiveOffersController {
       return new FetchActiveOffersController(
         $c->get(OffersRepository::class),
+      );
+    });
+
+    $c->set(UploadAttachmentController::class, static function (ContainerInterface $c): UploadAttachmentController {
+      return new UploadAttachmentController(
+        $c->get(AttachmentsRepository::class),
       );
     });
   }
