@@ -29,5 +29,5 @@ export type AuthContextType = {
   unauthenticated: boolean;
   updateAccount: (values: IAccount) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
-  logout: (justLogout?: boolean) => Promise<void>;
+  logout: () => Promise<void>;
 };

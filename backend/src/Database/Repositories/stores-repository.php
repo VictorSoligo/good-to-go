@@ -125,6 +125,49 @@ class StoresRepository {
     return $store;
   }
 
+  public function findMany() {
+    $sql = "
+      SELECT
+        stores.id,
+        stores.name,
+        stores.adress,
+        stores.owner_id,
+        stores.created_at,
+        stores.attachment_id,
+        attachments.url AS attachment_url
+      FROM
+        stores
+      INNER JOIN attachments ON attachments.id = stores.attachment_id
+      ORDER BY
+        stores.created_at DESC
+    ";
+
+    $stmt = $this->mysql->prepare($sql);
+    $stmt->execute();
+
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stores = [];
+
+    if (count($data) > 0) {
+      foreach ($data as $s) {
+        $store = new EssentialStore(
+          $s["id"], 
+          $s["name"], 
+          $s["adress"], 
+          $s["owner_id"],
+          $s["attachment_id"],
+          $s["attachment_url"],
+          new Date($s["created_at"]),
+        );
+
+        array_push($stores, $store);
+      }
+    }
+
+    return $stores;
+  }
+
   public function findManyByOwnerId(string $ownerId) {
     $sql = "
       SELECT

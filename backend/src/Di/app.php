@@ -8,6 +8,7 @@ use App\Controllers\CreateOfferController;
 use App\Controllers\CreateStoreController;
 use App\Controllers\FetchActiveOffersController;
 use App\Controllers\FetchOwnerStoresController;
+use App\Controllers\FetchStoresController;
 use App\Controllers\GetAttachmentController;
 use App\Controllers\GetStoreController;
 use App\Controllers\GetUserProfileController;
@@ -128,6 +129,12 @@ final class AppProvider implements ServiceProvider {
 
     $c->set(FetchOwnerStoresController::class, static function (ContainerInterface $c): FetchOwnerStoresController {
       return new FetchOwnerStoresController(
+        $c->get(StoresRepository::class)
+      );
+    });
+
+    $c->set(FetchStoresController::class, static function (ContainerInterface $c): FetchStoresController {
+      return new FetchStoresController(
         $c->get(StoresRepository::class)
       );
     });

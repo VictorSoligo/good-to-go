@@ -12,7 +12,7 @@ import RHFPasswordField from "../components/hook-form/rhf-password-field";
 import { Button } from "../components/button";
 import { VStack } from "@/components/ui/vstack";
 import { AlertCircleIcon } from "@/components/ui/icon";
-import { Link, Stack } from "expo-router";
+import { Link, router, Stack } from "expo-router";
 
 type FormDataProps = {
   email: string;
@@ -24,8 +24,6 @@ export default function Page() {
 
   const [errorText, setErrorText] = useState<string>("");
 
-  const toast = useToast();
-
   const methods = useForm<FormDataProps>({
     resolver: yupResolver(YupLoginSchema),
   });
@@ -35,6 +33,8 @@ export default function Page() {
   const onSubmit = handleSubmit(async ({ email, password }) => {
     try {
       await login(email, password);
+
+      router.replace("/");
     } catch (error: any) {
       const title =
         "Não foi possível acessar conta.\nTente novamente mais tarde";

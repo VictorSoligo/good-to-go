@@ -1,33 +1,22 @@
-import {
-  ChangePasswordType,
-  LoginType,
-  ResetPassworType,
-  ReturnLoginType,
-} from "../types/auth";
+import { IAccount } from "../types/account";
+import { LoginType, RegisterType, ReturnLoginType } from "../types/auth";
 import { axiosInstance } from "../utils/axios";
 
 const authRepository = {
   myAccount: async () => {
-    const { data } = await axiosInstance.get("/auth/my-account");
+    const { data } = await axiosInstance.get("/users/me");
 
-    return data as ReturnLoginType;
+    return data?.user as IAccount;
   },
   login: async (login: LoginType) => {
-    const { data } = await axiosInstance.post("/auth/login", login);
+    const { data } = await axiosInstance.post("/users/sessions", login);
 
     return data as ReturnLoginType;
   },
-  logout: async (refreshToken: string) => {
-    await axiosInstance.post("/auth/logout", { refreshToken });
-  },
-  changePassword: async (changePassword: ChangePasswordType) => {
-    await axiosInstance.post("/auth/change-password", changePassword);
-  },
-  forgotPassword: async (email: string) => {
-    await axiosInstance.post("/auth/forgot-password", { email });
-  },
-  resetPassword: async (resetPasswordBody: ResetPassworType) => {
-    await axiosInstance.post("/auth/reset-password", resetPasswordBody);
+  register: async (register: RegisterType) => {
+    const { data } = await axiosInstance.post("/users", register);
+
+    return data as ReturnLoginType;
   },
 };
 

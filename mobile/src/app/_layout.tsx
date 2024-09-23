@@ -1,16 +1,21 @@
 import React from "react";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
-import { AuthConsumer, AuthProvider } from "../contexts/auth";
+import { AuthProvider } from "../contexts/auth";
 import { Stack } from "expo-router";
 
 // Import your global CSS file
 import "../../global.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+export const unstable_settings = {
+  initialRouteName: "sign-in",
+};
 
 export default function Root() {
   return (
-    <GluestackUIProvider mode="light">
-      <AuthProvider>
-        <AuthConsumer>
+    <QueryClientProvider client={new QueryClient()}>
+      <GluestackUIProvider mode="light">
+        <AuthProvider>
           <Stack
             screenOptions={{
               headerTintColor: "#2E7D32",
@@ -21,14 +26,28 @@ export default function Root() {
             }}
           >
             <Stack.Screen
+              name="sign-in"
+              options={{
+                title: "Entrar",
+              }}
+            />
+
+            <Stack.Screen
               name="register"
               options={{
                 title: "Cadastrar",
               }}
             />
+
+            <Stack.Screen
+              name="(auth)"
+              options={{
+                headerShown: false,
+              }}
+            />
           </Stack>
-        </AuthConsumer>
-      </AuthProvider>
-    </GluestackUIProvider>
+        </AuthProvider>
+      </GluestackUIProvider>
+    </QueryClientProvider>
   );
 }

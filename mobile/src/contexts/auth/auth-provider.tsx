@@ -80,13 +80,9 @@ export function AuthProvider({ children }: Props) {
       const { token } = await getSession();
 
       if (token) {
-        const { account, tokens } = await authRepository.myAccount();
+        setAxiosSession(token);
 
-        setAxiosSession(tokens.access.token);
-        await storageSession({
-          refreshToken: tokens.refresh.token,
-          token: tokens.access.token,
-        });
+        const account = await authRepository.myAccount();
 
         dispatch({
           type: Types.INITIAL,
@@ -125,16 +121,15 @@ export function AuthProvider({ children }: Props) {
     try {
       setIsLoadingAccount(true);
 
-      const response = await authRepository.login({ email, password });
-
-      const { account, tokens } = response;
+      const { accessToken } = await authRepository.login({ email, password });
 
       await storageSession({
-        refreshToken: tokens.refresh.token,
-        token: tokens.access.token,
+        token: accessToken,
       });
 
-      setAxiosSession(tokens.access.token);
+      setAxiosSession(accessToken);
+
+      const account = await authRepository.myAccount();
 
       dispatch({
         type: Types.LOGIN,
@@ -160,22 +155,12 @@ export function AuthProvider({ children }: Props) {
   }, []);
 
   // LOGOUT
-  const logout = useCallback(async (justLogout = false) => {
-    const { refreshToken } = await getSession();
-
+  const logout = useCallback(async () => {
     await removeSession();
 
     dispatch({
       type: Types.LOGOUT,
     });
-
-    if (!justLogout && refreshToken) {
-      try {
-        await authRepository.logout(refreshToken);
-      } catch (error) {
-        // do nothing
-      }
-    }
   }, []);
 
   // ----------------------------------------------------------------------

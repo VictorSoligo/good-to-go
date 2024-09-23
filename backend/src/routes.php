@@ -14,6 +14,7 @@ return function (App $app) {
   });
 
   $app->group('/stores', function (Group $group) {
+    $group->get('', Controllers\FetchStoresController::class . ':handle');
     $group->post('', Controllers\CreateStoreController::class . ':handle')->add(new EnsureManagerMiddleware());
     $group->get('/owner', Controllers\FetchOwnerStoresController::class . ':handle');
     $group->get('/id/{id}', Controllers\GetStoreController::class . ':handle');
@@ -26,7 +27,7 @@ return function (App $app) {
   })->add(new AuthMiddleware());
 
   $app->group('/attachments', function (Group $group) {
-    $group->post('', Controllers\UploadAttachmentController::class . ':handle')->add(new EnsureManagerMiddleware());
+    $group->post('', Controllers\UploadAttachmentController::class . ':handle')->add(new EnsureManagerMiddleware())->add(new AuthMiddleware());
     $group->get('/{url}', Controllers\GetAttachmentController::class . ':handle');
-  })->add(new AuthMiddleware());
+  });
 };
