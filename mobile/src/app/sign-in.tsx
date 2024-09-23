@@ -39,7 +39,7 @@ export default function Page() {
       const title =
         "Não foi possível acessar conta.\nTente novamente mais tarde";
 
-      setErrorText(error?.message ?? title);
+      setErrorText(error?.response?.data?.message ?? title);
     }
   });
 
@@ -89,7 +89,7 @@ export default function Page() {
           </VStack>
         </FormProvider>
 
-        <Button text="Entrar" onPress={onSubmit} />
+        <Button text="Entrar" isLoading={isLoadingAccount} onPress={onSubmit} />
       </View>
 
       <View className="flex-row gap-1 justify-center mt-16">

@@ -40,20 +40,22 @@ export default function Home() {
           <Button text="Sair" variant="link" size="md" onPress={logout} />
         </HStack>
 
-        <TouchableOpacity activeOpacity={0.7}>
-          <VStack className="px-4 py-2 rounded-md bg-primary-main">
-            <Text className="text-2xl font-bold text-white">
-              Cadastrar uma loja
-            </Text>
-            <Text className="text-white font-bold">
-              Crie sua loja e comece a vender seus produtos na internet
-            </Text>
+        {account?.role === "manager" && (
+          <TouchableOpacity activeOpacity={0.7}>
+            <VStack className="px-4 py-2 rounded-md bg-primary-main">
+              <Text className="text-2xl font-bold text-white">
+                Cadastrar uma loja
+              </Text>
+              <Text className="text-white font-bold">
+                Crie sua loja e comece a vender seus produtos na internet
+              </Text>
 
-            <VStack className="items-end self-end mt-3 bg-white rounded-full p-2">
-              <Icon as={ChevronRightIcon} />
+              <VStack className="items-end self-end mt-3 bg-white rounded-full p-2">
+                <Icon as={ChevronRightIcon} />
+              </VStack>
             </VStack>
-          </VStack>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        )}
 
         <VStack>
           <Text className="font-bold text-xl text-primary-700">

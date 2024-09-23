@@ -1,3 +1,4 @@
+import { RegisterType } from "@/src/types/auth";
 import { IAccount } from "../../types/account";
 
 // ----------------------------------------------------------------------
@@ -27,7 +28,7 @@ export type AuthContextType = {
   isLoadingAccount: boolean;
   authenticated: boolean;
   unauthenticated: boolean;
-  updateAccount: (values: IAccount) => Promise<void>;
+  register: (register: RegisterType) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 };

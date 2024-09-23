@@ -7,6 +7,7 @@ import { getSession, storageSession } from "../../storage/storageAuthToken";
 import { removeSession, setAxiosSession } from "../../storage/axiosSession";
 import authRepository from "../../repositories/auth-repository";
 import { IAccount } from "../../types/account";
+import { RegisterType } from "@/src/types/auth";
 
 enum Types {
   INITIAL = "INITIAL",
@@ -144,14 +145,19 @@ export function AuthProvider({ children }: Props) {
     }
   }, []);
 
-  // UPDATE ACCOUNT
-  const updateAccount = useCallback(async (newAccount: IAccount) => {
-    dispatch({
-      type: Types.UPDATE_USER,
-      payload: {
-        account: newAccount,
-      },
-    });
+  // REGISTER
+  const register = useCallback(async (register: RegisterType) => {
+    try {
+      setIsLoadingAccount(true);
+
+      await authRepository.register(register);
+
+      setIsLoadingAccount(false);
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsLoadingAccount(false);
+    }
   }, []);
 
   // LOGOUT
@@ -180,9 +186,9 @@ export function AuthProvider({ children }: Props) {
       unauthenticated: status === "unauthenticated",
       login,
       logout,
-      updateAccount,
+      register,
     }),
-    [login, logout, state.account, status, isLoadingAccount, updateAccount]
+    [login, logout, state.account, status, isLoadingAccount, register]
   );
 
   return (
