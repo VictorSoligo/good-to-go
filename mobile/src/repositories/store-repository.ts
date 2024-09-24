@@ -7,4 +7,10 @@ export class StoreRepository {
 
     return data.stores as IStore[];
   }
+
+  static async getStoreById(storeId: string) {
+    const { data } = await axiosInstance.get(`/stores/id/${storeId}`);
+
+    return data.store as IStore;
+  }
 }

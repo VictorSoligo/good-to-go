@@ -79,18 +79,30 @@ export default function Home() {
               showsHorizontalScrollIndicator={false}
               renderItem={({ item }) => {
                 return (
-                  <Card className="items-center">
-                    <Image
-                      source={{
-                        uri: HOST_API + "/attachments/" + item.attachment.url,
-                      }}
-                      alt="Imagem da loja"
-                      className="w-28 h-28 rounded-full"
-                    />
-                    <Text className="text-sm font-bold text-primary-600 mt-2">
-                      {item.name}
-                    </Text>
-                  </Card>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      router.push({
+                        pathname: "/shop",
+                        params: {
+                          shopId: item.id,
+                        },
+                      });
+                    }}
+                  >
+                    <Card className="items-center">
+                      <Image
+                        source={{
+                          uri: HOST_API + "/attachments/" + item.attachment.url,
+                        }}
+                        alt="Imagem da loja"
+                        className="w-28 h-28 rounded-full"
+                      />
+                      <Text className="text-sm font-bold text-primary-600 mt-2">
+                        {item.name}
+                      </Text>
+                    </Card>
+                  </TouchableOpacity>
                 );
               }}
             />

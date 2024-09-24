@@ -24,7 +24,12 @@ export default function AppLayout() {
         },
       }}
     >
-      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="index"
+        options={{ headerShown: false, title: "Início" }}
+      />
+
+      <Stack.Screen name="shop" />
 
       <Stack.Screen name="offer" />
     </Stack>
