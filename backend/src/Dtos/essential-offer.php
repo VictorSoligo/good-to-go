@@ -8,6 +8,8 @@ class EssentialOffer implements \JsonSerializable {
   public string $id;
   public string $storeId;
   public string $storeName;
+  public string $storeAddress;
+  public string $ownerId;
   public string $description;
   public int $price;
   public array $attachments;
@@ -19,6 +21,8 @@ class EssentialOffer implements \JsonSerializable {
     string $id,
     string $storeId,
     string $storeName,
+    string $storeAddress,
+    string $ownerId,
     string $description,
     int $price,
     array $attachments,
@@ -29,8 +33,10 @@ class EssentialOffer implements \JsonSerializable {
     $this->id = $id;
     $this->storeId = $storeId;
     $this->storeName = $storeName;
+    $this->storeAddress = $storeAddress;
     $this->description = $description;
     $this->availableUntil = $availableUntil;
+    $this->ownerId = $ownerId;
     $this->canceledAt = $canceledAt;
     $this->attachments = $attachments;
     $this->createdAt = $createdAt;
@@ -51,7 +57,9 @@ class EssentialOffer implements \JsonSerializable {
       "price" => $this->price,
       "store" => [
         "id" => $this->storeId,
-        "name" => $this->storeName
+        "name" => $this->storeName,
+        "ownerId" => $this->ownerId,
+        "address" => $this->storeAddress,
       ],
       "attachments" => $attachments,
       "availableUntil" => $this->availableUntil,

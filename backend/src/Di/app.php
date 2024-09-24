@@ -28,7 +28,7 @@ use App\Controllers\UploadAttachmentController;
 use App\Database\Repositories\AttachmentsRepository;
 use App\Database\Repositories\OffersRepository;
 use App\Database\Repositories\StoresRepository;
-use App\Domain\Entities\Attachment;
+use App\Controllers\GetOfferController;
 
 final class AppProvider implements ServiceProvider {
   public function provide(Container $c): void {
@@ -111,6 +111,12 @@ final class AppProvider implements ServiceProvider {
     $c->set(AuthenticateUserController::class, static function (ContainerInterface $c): AuthenticateUserController {
       return new AuthenticateUserController(
         $c->get(UsersRepository::class)
+      );
+    });
+
+    $c->set(GetOfferController::class, static function (ContainerInterface $c): GetOfferController {
+      return new GetOfferController(
+        $c->get(OffersRepository::class),
       );
     });
 

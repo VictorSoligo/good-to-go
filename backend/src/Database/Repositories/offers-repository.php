@@ -88,6 +88,71 @@ class OffersRepository {
     return $offer;
   }
 
+  
+  public function findByIdWithDetails(string $id) {
+    $sql = <<<SQL
+      SELECT
+        offers.id,
+        offers.store_id,
+        offers.description,
+        offers.available_until,
+        offers.canceled_at,
+        offers.price,
+        offers.created_at,
+        stores.adress AS store_adress,
+        stores.name AS store_name,
+        stores.owner_id as owner_id
+      FROM
+        offers
+      INNER JOIN stores ON stores.id = offers.store_id
+      WHERE
+        offers.id = ?
+    SQL;
+
+    $stmt = $this->mysql->prepare($sql);
+    $stmt->execute([$id]);
+
+    $data = $stmt->fetch();
+    
+    if (!$data) {
+      return null;
+    }
+
+    $offerId = $data["id"];
+
+    $attachmentsSql = <<<SQL
+      SELECT
+        offers_attachments.id AS id,
+        attachments.url AS url
+      FROM
+        offers_attachments
+      INNER JOIN attachments ON attachments.id = offers_attachments.attachment_id
+      WHERE
+        offers_attachments.offer_id = ?
+    SQL;
+
+    $stmt = $this->mysql->prepare($attachmentsSql);
+    $stmt->execute([$id]);
+
+    $attachments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $offer = new EssentialOffer(
+      $offerId, 
+      $data["store_id"], 
+      $data["store_name"],
+      $data["store_adress"],
+      $data["owner_id"],
+      $data["description"], 
+      $data["price"],
+      $attachments,
+      new Date($data["available_until"]),
+      $data["canceled_at"] ? new Date($data["canceled_at"]) : null,
+      new Date($data["created_at"]),
+    );
+
+    return $offer;
+  }
+
   public function findManyActive() {
     $sql = <<<SQL
       SELECT
@@ -98,7 +163,9 @@ class OffersRepository {
         offers.canceled_at,
         offers.created_at,
         offers.price,
-        stores.name AS store_name
+        stores.name AS store_name,
+        stores.owner_id as owner_id,
+        stores.adress AS store_adress
       FROM
         offers
       INNER JOIN stores ON stores.id = offers.store_id
@@ -141,6 +208,8 @@ class OffersRepository {
           $offerId, 
           $o["store_id"],
           $o["store_name"],
+          $o["store_adress"],
+          $o["owner_id"],
           $o["description"],
           $o["price"],
           $attachments,

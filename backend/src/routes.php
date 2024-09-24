@@ -21,6 +21,7 @@ return function (App $app) {
   })->add(new AuthMiddleware());
 
   $app->group('/offers', function (Group $group) {
+    $group->get('/{id}/details', Controllers\GetOfferController::class . ':handle');
     $group->post('', Controllers\CreateOfferController::class . ':handle')->add(new EnsureManagerMiddleware());
     $group->patch('/{id}/cancel', Controllers\CancelOfferController::class . ':handle')->add(new EnsureManagerMiddleware());
     $group->get('/active', Controllers\FetchActiveOffersController::class . ':handle');

@@ -5,6 +5,8 @@ export type IOffer = {
   store: {
     id: string;
     name: string;
+    address: string;
+    ownerId: string;
   };
   attachments: {
     id: string;

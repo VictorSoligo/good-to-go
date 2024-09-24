@@ -7,4 +7,14 @@ export class OfferRepository {
 
     return data.offers as IOffer[];
   }
+
+  static async getOfferById(offerId: string) {
+    const { data } = await axiosInstance.get(`/offers/${offerId}/details`);
+
+    return data.offer as IOffer;
+  }
+
+  static async cancelOffer(offerId: string) {
+    await axiosInstance.patch(`/offers/${offerId}/cancel`);
+  }
 }
