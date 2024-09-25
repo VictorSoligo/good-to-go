@@ -59,7 +59,7 @@ export default function Page() {
       router.replace("/");
     } catch (error: any) {
       const title =
-        "Não foi possível acessar conta.\nTente novamente mais tarde";
+        "Não foi possível acessar conta.\nTente novamente mais  tarde";
 
       setErrorText(error?.response?.data?.message ?? title);
     }
