@@ -7,6 +7,7 @@ use App\Domain\Entities\Date;
 class EssentialOffer implements \JsonSerializable {
   public string $id;
   public string $storeId;
+  public string $productName;
   public string $storeName;
   public string $storeAddress;
   public string $ownerId;
@@ -20,6 +21,7 @@ class EssentialOffer implements \JsonSerializable {
   public function __construct(
     string $id,
     string $storeId,
+    string $productName,
     string $storeName,
     string $storeAddress,
     string $ownerId,
@@ -32,6 +34,7 @@ class EssentialOffer implements \JsonSerializable {
   ) {
     $this->id = $id;
     $this->storeId = $storeId;
+    $this->productName = $productName;
     $this->storeName = $storeName;
     $this->storeAddress = $storeAddress;
     $this->description = $description;
@@ -53,6 +56,7 @@ class EssentialOffer implements \JsonSerializable {
 
     return [
       "id" => $this->id,
+      "productName" => $this->productName,
       "description" => $this->description,
       "price" => $this->price,
       "store" => [

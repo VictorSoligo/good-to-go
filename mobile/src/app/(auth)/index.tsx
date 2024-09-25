@@ -52,14 +52,7 @@ export default function Home() {
           </HStack>
 
           {account?.role === "manager" && (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => {
-                router.push({
-                  pathname: "/new-store",
-                });
-              }}
-            >
+            <TouchableOpacity activeOpacity={0.7}>
               <VStack className="px-4 py-2 rounded-md bg-primary-main">
                 <Text className="text-2xl font-bold text-white">
                   Cadastrar uma loja
@@ -112,7 +105,7 @@ export default function Home() {
                           className="text-lg font-bold text-primary-400 "
                           numberOfLines={1}
                         >
-                          {item.description}
+                          {item.productName}
                         </Text>
 
                         <HStack

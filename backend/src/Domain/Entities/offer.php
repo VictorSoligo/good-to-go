@@ -5,8 +5,9 @@ namespace App\Domain\Entities;
 class Offer {
   public string $id;
   public string $storeId;
+  public string $productName;
   public string $description;
-  public int $price; 
+  public int $price;
   public Date $availableUntil;
   public array $attachments;
   public ?Date $canceledAt;
@@ -15,6 +16,7 @@ class Offer {
   public function __construct(
     ?string $id,
     string $storeId,
+    string $productName,
     string $description,
     int $price,
     array $attachments,
@@ -25,6 +27,7 @@ class Offer {
     $this->id = isset($id) ? $id : uniqid();
     $this->storeId = $storeId;
     $this->description = $description;
+    $this->productName = $productName;
     $this->price = $price;
     $this->attachments = $attachments;
     $this->availableUntil = $availableUntil;

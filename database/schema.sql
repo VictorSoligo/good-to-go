@@ -49,6 +49,7 @@ CREATE TABLE `offers` (
   `available_until` datetime NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `price` int unsigned NOT NULL,
+  `product_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `offers_stores_id_fk` (`store_id`),
   CONSTRAINT `offers_stores_id_fk` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`)
@@ -123,4 +124,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-18 12:56:21
+-- Dump completed on 2024-09-24 23:58:57

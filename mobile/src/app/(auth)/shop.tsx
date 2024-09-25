@@ -1,3 +1,4 @@
+import { Badge, BadgeIcon, BadgeText } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { HStack } from "@/components/ui/hstack";
 import { Text } from "@/components/ui/text";
@@ -8,9 +9,9 @@ import { HOST_API } from "@/src/config-global";
 import { useAuthContext } from "@/src/hooks/use-auth-context";
 import { OfferRepository } from "@/src/repositories/offer-repository";
 import { StoreRepository } from "@/src/repositories/store-repository";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Redirect, router, Stack, useLocalSearchParams } from "expo-router";
-import { Clock, MapPin } from "lucide-react-native";
+import { Clock, HouseIcon, MapPin } from "lucide-react-native";
 import { Dimensions, Image, ScrollView, TouchableOpacity } from "react-native";
 
 export default function Shop() {
@@ -22,6 +23,7 @@ export default function Shop() {
 
   const {
     data: shop,
+    refetch,
     isLoading,
     isError,
   } = useQuery({
@@ -62,10 +64,7 @@ export default function Shop() {
           <HStack className="justify-between items-center">
             <Text className="text-2xl font-bold">{shop?.name}</Text>
 
-            <Text className="text-md">
-              Ofertas Hoje{" "}
-              {offers.filter((item) => item.store.id === shopId).length}
-            </Text>
+            <Text className="text-md">Ofertas Hoje {offers.length}</Text>
           </HStack>
 
           <HStack className="p-3 bg-gray-100 rounded-md my-4" space="md">
@@ -78,12 +77,6 @@ export default function Shop() {
             <Text className="font-bold text-xl text-primary-700">
               Outros Produtos
             </Text>
-
-            {offers.filter((item) => item.store.id === shopId).length === 0 && (
-              <Text className="text-center text-lg mt-4">
-                Nenhuma oferta disponível
-              </Text>
-            )}
 
             {offers
               .filter((item) => item.store.id === shopId)
@@ -116,7 +109,7 @@ export default function Shop() {
                           className="text-2xl font-bold text-primary-700 "
                           numberOfLines={1}
                         >
-                          {item.description}
+                          {item.productName}
                         </Text>
 
                         <HStack className="items-center justify-between">

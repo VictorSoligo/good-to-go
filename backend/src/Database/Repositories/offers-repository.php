@@ -24,7 +24,8 @@ class OffersRepository {
         available_until,
         canceled_at,
         price,
-        created_at
+        created_at,
+        product_name
       FROM
         offers
       WHERE
@@ -77,6 +78,7 @@ class OffersRepository {
     $offer = new Offer(
       $offerId, 
       $data["store_id"], 
+      $data["product_name"],
       $data["description"], 
       $data["price"],
       $attachments,
@@ -98,6 +100,7 @@ class OffersRepository {
         offers.available_until,
         offers.canceled_at,
         offers.price,
+        offers.product_name,
         offers.created_at,
         stores.adress AS store_adress,
         stores.name AS store_name,
@@ -138,7 +141,8 @@ class OffersRepository {
 
     $offer = new EssentialOffer(
       $offerId, 
-      $data["store_id"], 
+      $data["store_id"],
+      $data["product_name"],
       $data["store_name"],
       $data["store_adress"],
       $data["owner_id"],
@@ -162,6 +166,7 @@ class OffersRepository {
         offers.available_until,
         offers.canceled_at,
         offers.created_at,
+        offers.product_name,
         offers.price,
         stores.name AS store_name,
         stores.owner_id as owner_id,
@@ -207,6 +212,7 @@ class OffersRepository {
         $offer = new EssentialOffer(
           $offerId, 
           $o["store_id"],
+          $o["product_name"],
           $o["store_name"],
           $o["store_adress"],
           $o["owner_id"],
@@ -235,10 +241,12 @@ class OffersRepository {
           description,
           available_until,
           created_at,
-          price
+          price,
+          product_name
         )
       VALUES
         (
+          ?,
           ?,
           ?,
           ?,
@@ -257,6 +265,7 @@ class OffersRepository {
       $offer->availableUntil->format("c"),
       $offer->createdAt->format("c"),
       $offer->price,
+      $offer->productName,
     ]);
 
     foreach ($offer->attachments as $attachment) {

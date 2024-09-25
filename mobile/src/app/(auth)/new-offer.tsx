@@ -19,6 +19,7 @@ import { ScrollView, Text, View } from "react-native";
 
 type FormDataProps = {
   description: string;
+  productName: string;
   price: number;
   availableUntil: string;
   image: ImagePickerAsset;
@@ -53,7 +54,7 @@ export default function Page() {
   const { handleSubmit } = methods;
 
   const onSubmit = handleSubmit(
-    async ({ availableUntil, description, image, price }) => {
+    async ({ availableUntil, description, image, price, productName }) => {
       try {
         const formData = new FormData();
         // @ts-ignore
@@ -69,6 +70,7 @@ export default function Page() {
         const formattedDate = `${year}-${month}-${day}`;
 
         await mutateAsync({
+          productName,
           availableUntil: formattedDate,
           description,
           attachmentsIds: [id],
@@ -100,7 +102,7 @@ export default function Page() {
     <VStack className="flex-1 px-6 bg-white py-4 pb-10" space="md">
       <Stack.Screen
         options={{
-          title: `Nova Oferta da ${shop?.name}`,
+          title: `Nova Oferta`,
         }}
       />
 
@@ -124,6 +126,14 @@ export default function Page() {
             <View className="h-44 w-full mb-2">
               <RHFLibrary name="image" label="Imagem" />
             </View>
+
+            <RHFTextField
+              name="productName"
+              label="Nome Produto"
+              inputProps={{
+                placeholder: "Nome do Produto",
+              }}
+            />
 
             <RHFTextField
               name="description"
