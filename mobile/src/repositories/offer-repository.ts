@@ -17,4 +17,14 @@ export class OfferRepository {
   static async cancelOffer(offerId: string) {
     await axiosInstance.patch(`/offers/${offerId}/cancel`);
   }
+
+  static async createOffer(offer: {
+    description: string;
+    price: number;
+    availableUntil: string;
+    attachmentsIds: string[];
+    storeId: string;
+  }) {
+    await axiosInstance.post("/offers", offer);
+  }
 }

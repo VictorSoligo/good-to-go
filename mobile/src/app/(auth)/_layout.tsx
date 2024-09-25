@@ -34,6 +34,8 @@ export default function AppLayout() {
       <Stack.Screen name="offer" />
 
       <Stack.Screen name="new-store" />
+
+      <Stack.Screen name="new-offer" />
     </Stack>
   );
 }

@@ -78,7 +78,9 @@ export default function Offer() {
           <HStack className="justify-between items-center">
             <Text className="text-xl font-bold">{offer?.description}</Text>
 
-            <Text className="text-3xl font-bold">$ {offer?.price}</Text>
+            <Text className="text-3xl font-bold">
+              $ {(offer?.price! / 100).toFixed(2)}
+            </Text>
           </HStack>
 
           <HStack className="p-3 bg-gray-100 rounded-md my-4" space="md">
@@ -186,7 +188,7 @@ export default function Offer() {
                           numberOfLines={1}
                           className="text-xl font-bold text-primary-600"
                         >
-                          $ {item.price}
+                          $ {(item.price / 100).toFixed(2)}
                         </Text>
                       </VStack>
                     </Card>

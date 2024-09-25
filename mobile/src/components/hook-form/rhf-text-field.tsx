@@ -23,6 +23,7 @@ type Props = {
   helperText?: string;
   inputProps?: ComponentProps<typeof InputField>;
   formControl?: ComponentProps<typeof FormControl>;
+  sexo?: ComponentProps<typeof Input>;
 };
 
 export function RHFTextField({
@@ -31,6 +32,7 @@ export function RHFTextField({
   helperText,
   inputProps,
   formControl,
+  sexo,
 }: Props) {
   const { control } = useFormContext();
 
@@ -50,7 +52,7 @@ export function RHFTextField({
             </FormControlLabel>
           )}
 
-          <Input>
+          <Input {...sexo}>
             <InputField
               autoCapitalize="none"
               {...inputProps}

@@ -144,7 +144,7 @@ export default function Shop() {
                           numberOfLines={1}
                           className="text-xl font-bold text-primary-600"
                         >
-                          $ {item.price}
+                          $ {(item.price / 100).toFixed(2)}
                         </Text>
                       </VStack>
                     </Card>
@@ -155,7 +155,18 @@ export default function Shop() {
         </ScrollView>
 
         {account?.id === shop?.ownerId && (
-          <Button text="Cadastrar Oferta" action="primary" onPress={() => {}} />
+          <Button
+            text="Cadastrar Oferta"
+            action="primary"
+            onPress={() => {
+              router.push({
+                pathname: "/new-offer",
+                params: {
+                  shopId,
+                },
+              });
+            }}
+          />
         )}
       </VStack>
     </VStack>
