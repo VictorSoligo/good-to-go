@@ -70,46 +70,6 @@ export default function Home() {
 
           <VStack>
             <Text className="font-bold text-xl text-primary-700">
-              Lojas Destaques
-            </Text>
-
-            <FlatList
-              data={stores}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => {
-                      router.push({
-                        pathname: "/shop",
-                        params: {
-                          shopId: item.id,
-                        },
-                      });
-                    }}
-                  >
-                    <Card className="items-center">
-                      <Image
-                        source={{
-                          uri: HOST_API + "/attachments/" + item.attachment.url,
-                        }}
-                        alt="Imagem da loja"
-                        className="w-28 h-28 rounded-full"
-                      />
-                      <Text className="text-sm font-bold text-primary-600 mt-2">
-                        {item.name}
-                      </Text>
-                    </Card>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </VStack>
-
-          <VStack>
-            <Text className="font-bold text-xl text-primary-700">
               Produtos do Dia
             </Text>
 
@@ -145,7 +105,7 @@ export default function Home() {
                           className="text-lg font-bold text-primary-400 "
                           numberOfLines={1}
                         >
-                          {item.description}
+                          {item.productName}
                         </Text>
 
                         <HStack
@@ -161,10 +121,50 @@ export default function Home() {
                             numberOfLines={1}
                             className="text-md font-bold text-primary-600"
                           >
-                            $ {item.price}
+                            $ {(item.price / 100).toFixed(2)}
                           </Text>
                         </HStack>
                       </VStack>
+                    </Card>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </VStack>
+
+          <VStack>
+            <Text className="font-bold text-xl text-primary-700">
+              Lojas Destaques
+            </Text>
+
+            <FlatList
+              data={stores}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      router.push({
+                        pathname: "/shop",
+                        params: {
+                          shopId: item.id,
+                        },
+                      });
+                    }}
+                  >
+                    <Card className="items-center">
+                      <Image
+                        source={{
+                          uri: HOST_API + "/attachments/" + item.attachment.url,
+                        }}
+                        alt="Imagem da loja"
+                        className="w-28 h-28 rounded-full"
+                      />
+                      <Text className="text-sm font-bold text-primary-600 mt-2">
+                        {item.name}
+                      </Text>
                     </Card>
                   </TouchableOpacity>
                 );

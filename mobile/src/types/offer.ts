@@ -1,5 +1,6 @@
 export type IOffer = {
   id: string;
+  productName: string;
   description: string;
   price: number;
   store: {

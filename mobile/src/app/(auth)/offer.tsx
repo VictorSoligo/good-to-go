@@ -62,7 +62,7 @@ export default function Offer() {
     <VStack className="flex-1">
       <Stack.Screen
         options={{
-          title: offer?.description || "Oferta",
+          title: offer?.productName || "Oferta",
         }}
       />
 
@@ -76,9 +76,11 @@ export default function Offer() {
       <VStack className="flex-1 px-6 bg-white py-4 pb-10" space="md">
         <ScrollView showsVerticalScrollIndicator={false}>
           <HStack className="justify-between items-center">
-            <Text className="text-xl font-bold">{offer?.description}</Text>
+            <Text className="text-xl font-bold">{offer?.productName}</Text>
 
-            <Text className="text-3xl font-bold">$ {offer?.price}</Text>
+            <Text className="text-3xl font-bold">
+              $ {(offer?.price! / 100).toFixed(2)}
+            </Text>
           </HStack>
 
           <HStack className="p-3 bg-gray-100 rounded-md my-4" space="md">
@@ -115,6 +117,15 @@ export default function Offer() {
               )}
             </HStack>
           </HStack>
+
+          <VStack className="mt-5">
+            <Text className="font-bold text-lg">Descrição</Text>
+
+            <Text className="mt-2 mx-1">
+              {offer?.description ||
+                "Descrição não disponível para esta oferta."}
+            </Text>
+          </VStack>
 
           <VStack className="mt-8">
             <Text className="font-bold text-xl text-primary-700">
@@ -186,7 +197,7 @@ export default function Offer() {
                           numberOfLines={1}
                           className="text-xl font-bold text-primary-600"
                         >
-                          $ {item.price}
+                          $ {(item.price / 100).toFixed(2)}
                         </Text>
                       </VStack>
                     </Card>
