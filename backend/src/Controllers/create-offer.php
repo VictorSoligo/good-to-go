@@ -36,6 +36,7 @@ class CreateOfferController {
     $price = $body['price'];
     $storeId = $body['storeId'];
     $attachmentsIds = $body['attachmentsIds'];
+    $productName = $body['productName'];
 
     if (!$attachmentsIds || count($attachmentsIds) === 0) {
       $response->getBody()->write(json_encode(
@@ -93,7 +94,8 @@ class CreateOfferController {
 
     $offer = new Offer(
       $offerId, 
-      $storeId, 
+      $storeId,
+      $productName,
       $description, 
       $price,
       $attachments,
