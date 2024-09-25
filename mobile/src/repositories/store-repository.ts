@@ -13,12 +13,4 @@ export class StoreRepository {
 
     return data.store as IStore;
   }
-
-  static async createStore(store: {
-    name: string;
-    adress: string;
-    attachmentId: string;
-  }) {
-    await axiosInstance.post<{ id: string }>("/stores", store);
-  }
 }

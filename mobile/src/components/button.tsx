@@ -32,7 +32,7 @@ export function Button({
     >
       {leftIcon && !isLoading && <ButtonIcon as={leftIcon} />}
 
-      {isLoading && <ButtonSpinner className="color-white" />}
+      {isLoading && <ButtonSpinner />}
 
       <ButtonText className="font-bold" {...buttonTextProps}>
         {text}
