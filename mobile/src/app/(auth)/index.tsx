@@ -112,7 +112,7 @@ export default function Home() {
                           className="text-lg font-bold text-primary-400 "
                           numberOfLines={1}
                         >
-                          {item.description}
+                          {item.productName}
                         </Text>
 
                         <HStack

@@ -116,7 +116,7 @@ export default function Shop() {
                           className="text-2xl font-bold text-primary-700 "
                           numberOfLines={1}
                         >
-                          {item.description}
+                          {item.productName}
                         </Text>
 
                         <HStack className="items-center justify-between">

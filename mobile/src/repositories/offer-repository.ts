@@ -21,6 +21,7 @@ export class OfferRepository {
   static async createOffer(offer: {
     description: string;
     price: number;
+    productName: string;
     availableUntil: string;
     attachmentsIds: string[];
     storeId: string;

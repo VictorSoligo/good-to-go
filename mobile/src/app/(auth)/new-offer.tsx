@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { ScrollView, Text, View } from "react-native";
 
 type FormDataProps = {
+  productName: string;
   description: string;
   price: number;
   availableUntil: string;
@@ -53,7 +54,7 @@ export default function Page() {
   const { handleSubmit } = methods;
 
   const onSubmit = handleSubmit(
-    async ({ availableUntil, description, image, price }) => {
+    async ({ availableUntil, description, image, price, productName }) => {
       try {
         const formData = new FormData();
         // @ts-ignore
@@ -71,6 +72,7 @@ export default function Page() {
         await mutateAsync({
           availableUntil: formattedDate,
           description,
+          productName,
           attachmentsIds: [id],
           price: Number(price) * 100,
           storeId: shopId,
@@ -124,6 +126,14 @@ export default function Page() {
             <View className="h-44 w-full mb-2">
               <RHFLibrary name="image" label="Imagem" />
             </View>
+
+            <RHFTextField
+              name="productName"
+              label="Nome Produto"
+              inputProps={{
+                placeholder: "Nome do Produto",
+              }}
+            />
 
             <RHFTextField
               name="description"
