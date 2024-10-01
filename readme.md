@@ -2,6 +2,10 @@
 
 Acadêmicos: Eduardo Farah, João Thomazoni e Victor Hugo Soligo.
 
+# Diagrama
+
+![prog4](https://github.com/user-attachments/assets/04627f40-9f6b-4bf6-bb16-345873580fe9)
+
 # Executar o Ambiente de Desenvolvimento
 
 ## Requisitos
